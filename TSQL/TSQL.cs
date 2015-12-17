@@ -20,7 +20,7 @@ namespace TSQL
                 this.obj.Connection.Close();
         }
 
-        //Generic get table class
+        //Generic get table classss
         public IQueryable<Class> fetch<Class>() where Class : class
         {
             try
