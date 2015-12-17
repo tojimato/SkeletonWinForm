@@ -31,16 +31,16 @@ namespace SkeletonWinForm
 
             
             //Select Data Source From Linq To SQL
-            gvTestGrid.DataSource = x.fetch<AppData.MUH_FATURA>()
+            /*gvTestGrid.DataSource = x.fetch<AppData.MUH_FATURA>()
                 .Select(y => new { y.MUH_FATURAID })
                 .Where((refx => refx.MUH_FATURAID == 59 || refx.MUH_FATURAID == 58 || refx.MUH_FATURAID == 77));
-
+            */
             // /* ##################################### Run Custom Query.  ################################# */  
-            var result = x.runQuery<AppData.MUH_FATURA>(@"Select * FROM PRJTHOR.dbo.MUH_FATURA WHERE MUH_FATURAID={0}",58);
+            /*var result = x.runQuery<AppData.MUH_FATURA>(@"Select * FROM PRJTHOR.dbo.MUH_FATURA WHERE MUH_FATURAID={0}",58);
             Console.WriteLine("Run Query : "+result.Count().ToString());
 
            
-            /* ##################################### Insert ################################# */ 
+            /* ##################################### Insert #################################  
             AppData.IL Il = new AppData.IL(){
                 IL_ADI = "Torzincan",
                 IL_ADI_BUYUK = "TORZINCAN",
@@ -50,11 +50,22 @@ namespace SkeletonWinForm
                 IL_ID = 1011
             };
              var insert_result = x.insert<AppData.IL>(Il);
-           
+           */
             //Sorgu suresi, Hata Mesaji vs vs..
 
-            /* ####################################### Update ##############################################*/
-
+            /* ####################################### Update ##############################################
+             */
+            /*AppData.IL Il = new AppData.IL()
+            {
+                IL_ADI = "Torzincan",
+                IL_ADI_BUYUK = "TORZINCAN",
+                IL_ADI_KUCUK = "torzincan",
+                IL_KODU = "99",
+                PLAKA = 101,
+                IL_ID = 1011
+            };*/
+            //var insert_result = x.insert<AppData.IL>(Il);
+            
             AppData.IL IlUpdate = new AppData.IL()
             {
                 IL_ADI = "Torzinc33an",
@@ -64,11 +75,11 @@ namespace SkeletonWinForm
                 PLAKA = 101,
                 IL_ID = 1011
             };
-
-            var update_result = x.update<AppData.IL>(IlUpdate, (il => il.IL_ID == IlUpdate.IL_ID));
+           
+            var update_result = x.update2<AppData.IL>(IlUpdate, (il => il.IL_ID == IlUpdate.IL_ID));
             /* ###################################### Delete ##############################################*/
 
-            var delete_result = x.delete<AppData.IL>(d=> d.IL_ID == 70);
+            //var delete_result = x.delete<AppData.IL>(d=> d.IL_ID == 70);
            
            
         }

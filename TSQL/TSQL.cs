@@ -19,7 +19,7 @@ namespace TSQL
             if (this.obj.Connection.State == ConnectionState.Open)
                 this.obj.Connection.Close();
         }
-
+       
         //Generic get table classss
         public IQueryable<Class> fetch<Class>() where Class : class
         {
@@ -85,6 +85,34 @@ namespace TSQL
               
                 result = false;
                
+            }
+            return result;
+        }
+
+        //Update Class 2
+        public bool update2<Class>(Class cls, Expression<Func<Class, bool>> expression) where Class : class , new()
+        {
+            var result = false;
+            try
+            {
+               // this.obj.GetTable<Class>().Where(expression).Upda;
+              
+                var x = from i in this.obj.GetTable<Class>().Where(expression)
+                            select i;
+
+                foreach (Class item in x)
+                {
+                    //item = cls;
+                }
+                this.obj.SubmitChanges();
+                
+                result = true;
+            }
+            catch (Exception ex)
+            {
+
+                result = false;
+
             }
             return result;
         }
