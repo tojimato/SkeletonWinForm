@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Data.Linq.Mapping;
 
 namespace TSQL
 {
+    /// <summary>
+    /// TODO : // RESULT CLASS EKLENECEK
+    /// </summary>
+    /// <typeparam name="Context"></typeparam>
     public class TSQL<Context>
         where Context : System.Data.Linq.DataContext, new()
     {
@@ -16,126 +22,168 @@ namespace TSQL
         public TSQL()
         {
             this.obj = new Context();
-            if (this.obj.Connection.State == ConnectionState.Open)
-                this.obj.Connection.Close();
         }
-       
-        //Generic get table classss
-        public IQueryable<Class> fetch<Class>() where Class : class
+        /// <summary>
+        /// Select
+        /// </summary>
+        /// <typeparam name="Class"></typeparam>
+        /// <returns></returns>
+        public IQueryable<Class> fetch<Class>(Expression<Func<Class, bool>> _where) where Class : class,new()
         {
-            try
-            {
-                return (from i in this.obj.GetTable<Class>() select i);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        //Custom Run Query 
-        public IList<Class> runQuery<Class>(string query, params object[] parameters) where Class : class
-        {
-            try
-            {
-                IList<Class> result;
-                result = obj.ExecuteQuery<Class>(query, parameters).ToList();
-                return result;
-            }
-            catch (Exception ex)
-            {               
-                throw new Exception(ex.Message);
-            }
 
+            try
+            {
+                return this.obj.GetTable<Class>()
+                                          .Where(_where);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-        //Insert Class
-        public bool insert<Class>(Class cls) where Class : class
+        /// <summary>
+        /// Custom RunQuery
+        /// </summary>
+        /// <typeparam name="Class"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public Result<IList<Class>> runQuery<Class>(string query, params object[] parameters) where Class : class
         {
-            var result = false;
+            var result = new Result<IList<Class>>();
+            try
+            {
+                result.TransactionResult = obj.ExecuteQuery<Class>(query, parameters).ToList();
+                result.IsSucceeded = true;
+            }
+            catch (Exception ex)
+            {
+
+                result.IsSucceeded = false;
+                result.TransactionException = ex;
+                result.UserMessage.Add(ex.Message);
+            }
+            return result;
+        }
+ 
+        /// <summary>
+        /// Insert Class
+        /// </summary>
+        /// <typeparam name="Class"></typeparam>
+        /// <param name="cls"></param>
+        /// <returns></returns>
+        public Result<Class> insert<Class>(Class cls) where Class : class
+        {
+            var result = new Result<Class>();
 
             try
             {
                 this.obj.GetTable<Class>().InsertOnSubmit(cls);
                 this.obj.SubmitChanges();
-                result = true;
+                result.IsSucceeded = true;
             }
             catch (Exception ex)
             {
-                result = false;
-                
+                this.obj = new Context();
+                result.IsSucceeded = false;
+                result.TransactionException = ex;
+                result.UserMessage.Add(ex.Message);
             }
 
             return result;
         }
-        //Update Class
-        public bool update<Class>(Class cls, Expression<Func<Class, bool>> expression) where Class : class
+        /// <summary>
+        ///    Update row with specified class object.
+        /// </summary>
+        /// <typeparam name="Class"></typeparam>
+        /// <param name="cls"></param>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public Result<Class> update<Class>(Class cls, Expression<Func<Class, bool>> expression) where Class : class , new()
         {
-
-            var result = false;
+            var result = new Result<Class>();
             try
             {
-                var rmv = this.delete(expression);
-                if (rmv)
+                var obj = this.obj;
+                var itemList = obj.GetTable<Class>().Where(expression);
+
+                foreach (var item in itemList)
                 {
-                    this.insert<Class>(cls);
+                    var currentItemProperties = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    var primaryKeys = this.getPrimaryKey(cls);
+                    foreach (var pk in primaryKeys)
+                    {
+                        foreach (PropertyInfo prop in currentItemProperties)
+                        {
+                            if (pk.Name != prop.Name)
+                            {
+                                if (null != prop && prop.CanWrite)
+                                {
+                                    var setValue = cls.GetType().GetProperty(prop.Name).GetValue(cls, null);
+                                    if (setValue != null)
+                                    {
+                                        prop.SetValue(item, cls.GetType().GetProperty(prop.Name).GetValue(cls, null), null);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    var xx = obj.GetChangeSet();
+                    obj.SubmitChanges();
                 }
-                result = true;
+                result.IsSucceeded = true;
             }
             catch (Exception ex)
             {
-              
-                result = false;
-               
+                this.obj = new Context();
+                result.IsSucceeded = false;
+                result.TransactionException = ex;
+                result.UserMessage.Add(ex.Message);
             }
             return result;
         }
-
-        //Update Class 2
-        public bool update2<Class>(Class cls, Expression<Func<Class, bool>> expression) where Class : class , new()
+        /// <summary>
+        /// Delete Class
+        /// </summary>
+        /// <typeparam name="Class"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public Result<Class> delete<Class>(Expression<Func<Class, bool>> expression) where Class : class
         {
-            var result = false;
-            try
-            {
-               // this.obj.GetTable<Class>().Where(expression).Upda;
-              
-                var x = from i in this.obj.GetTable<Class>().Where(expression)
-                            select i;
+            var result = new Result<Class>();
 
-                foreach (Class item in x)
-                {
-                    //item = cls;
-                }
-                this.obj.SubmitChanges();
-                
-                result = true;
-            }
-            catch (Exception ex)
-            {
-
-                result = false;
-
-            }
-            return result;
-        }
-        //Delete Class
-        public bool delete<Class>(Expression<Func<Class, bool>> expression) where Class : class
-        {
-            var result = false;
             try
             {
                 var objects = this.obj.GetTable<Class>().Where(expression);
                 var deletionObj = this.obj.GetTable<Class>();
-                foreach(var item in objects)
+                foreach (var item in objects)
                 {
-                   deletionObj.DeleteOnSubmit(item);
+                    deletionObj.DeleteOnSubmit(item);
                 }
                 this.obj.SubmitChanges();
-                result = true;
+                result.IsSucceeded = true;
             }
             catch (Exception ex)
             {
-                result = false;
+                this.obj = new Context();
+                result.IsSucceeded = false;
+                result.TransactionException = ex;
+                result.UserMessage.Add(ex.Message);
             }
             return result;
+        }
+        private IEnumerable<MetaDataMember> getPrimaryKey<Class>(Class cls) where Class : class
+        {
+
+            MetaType metaEntityType = this.obj.Mapping.GetMetaType(cls.GetType());
+
+            var primaryKeyColumns = from pkColumn in metaEntityType.DataMembers
+                                    where pkColumn.IsPrimaryKey
+                                    select pkColumn;
+
+            return primaryKeyColumns;
         }
 
 

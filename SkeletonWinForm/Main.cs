@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Linq.Mapping;
 
 
 namespace SkeletonWinForm
@@ -27,59 +28,71 @@ namespace SkeletonWinForm
         {
             var appContext = new AppData.SkeletonLINQDataContext();
 
-            var x = new TSQL.TSQL<AppData.SkeletonLINQDataContext>();
+            var myObj = new TSQL.TSQL<AppData.SkeletonLINQDataContext>();
+            var muh = new AppData.MUH_FATURA();
 
-            
-            //Select Data Source From Linq To SQL
-            /*gvTestGrid.DataSource = x.fetch<AppData.MUH_FATURA>()
-                .Select(y => new { y.MUH_FATURAID })
-                .Where((refx => refx.MUH_FATURAID == 59 || refx.MUH_FATURAID == 58 || refx.MUH_FATURAID == 77));
-            */
-            // /* ##################################### Run Custom Query.  ################################# */  
-            /*var result = x.runQuery<AppData.MUH_FATURA>(@"Select * FROM PRJTHOR.dbo.MUH_FATURA WHERE MUH_FATURAID={0}",58);
-            Console.WriteLine("Run Query : "+result.Count().ToString());
 
-           
-            /* ##################################### Insert #################################  
-            AppData.IL Il = new AppData.IL(){
-                IL_ADI = "Torzincan",
-                IL_ADI_BUYUK = "TORZINCAN",
-                IL_ADI_KUCUK = "torzincan",
-                IL_KODU = "99",
-                PLAKA = 101,
-                IL_ID = 1011
-            };
-             var insert_result = x.insert<AppData.IL>(Il);
-           */
-            //Sorgu suresi, Hata Mesaji vs vs..
+            /** INSERT  START **/
 
-            /* ####################################### Update ##############################################
-             */
-            /*AppData.IL Il = new AppData.IL()
+            var result = myObj.insert<AppData.IL>(new AppData.IL()
             {
-                IL_ADI = "Torzincan",
-                IL_ADI_BUYUK = "TORZINCAN",
-                IL_ADI_KUCUK = "torzincan",
-                IL_KODU = "99",
-                PLAKA = 101,
-                IL_ID = 1011
-            };*/
-            //var insert_result = x.insert<AppData.IL>(Il);
+                IL_ID = 1000,
+                IL_ADI = "TulayBakir",
+                PLAKA = 255,
+                IL_ADI_BUYUK = "TULAYBAKIR",
+                IL_ADI_KUCUK = "tulaybakir",
+                IL_KODU = "99"
+            });
+
+            Console.WriteLine("Insert : " + result.IsSucceeded.ToString());
+            /** INSERT  END **/
+
+            /** FECTH  START **/
+
+            var result2 = myObj.fetch<AppData.MUH_FATURA>(
+                _where: w => w.MUH_FATURAID == 59 || w.MUH_FATURAID == 58 || w.MUH_FATURAID == 7).Select(x => new { x.MUH_FATURAID});
+
+            gvT.DataSource = result2;
+
+            if (gvT.RowCount > 0)
+            {
+                Console.WriteLine("Fecth : True "); 
+            }
+            /** FECTH  END **/
+
             
+            /* RUN CUSTOM QUERY  START*/
+
+            var result3 = myObj.runQuery<AppData.MUH_FATURA>(@"SELECT * FROM dbo.MUH_FATURA WHERE MUH_FATURAID={0}", 58);
+            Console.WriteLine("Run Query : " + result3.IsSucceeded.ToString());
+
+            /* RUN CUSTOM QUERY  END */
+
+            /* RUN CUSTOM QUERY  START*/
+
+            var result4 = myObj.runQuery<String>(@"SELECT dbo.FN_BUGUNUN_TARIHI({0})", DateTime.Now);
+            Console.WriteLine("Run Query : " + result3.IsSucceeded.ToString());
+
+            /* RUN CUSTOM QUERY  END */
+
+
+
+            /* UPDATE START */
+
             AppData.IL IlUpdate = new AppData.IL()
             {
-                IL_ADI = "Torzinc33an",
-                IL_ADI_BUYUK = "TORZINCAN333333",
-                IL_ADI_KUCUK = "torzin33can",
+                IL_ADI = "IKILI UPDATE",
                 IL_KODU = "99",
                 PLAKA = 101,
                 IL_ID = 1011
             };
-           
-            var update_result = x.update2<AppData.IL>(IlUpdate, (il => il.IL_ID == IlUpdate.IL_ID));
-            /* ###################################### Delete ##############################################*/
 
-            //var delete_result = x.delete<AppData.IL>(d=> d.IL_ID == 70);
+            var update_result = myObj.update<AppData.IL>(IlUpdate, (il => il.IL_ID == 1011 || il.IL_ID == 1000));
+            Console.WriteLine("Update :" + update_result.IsSucceeded.ToString());
+
+            /* UPDATE END*/ 
+       
+            
            
            
         }

@@ -30,19 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.gvTestGrid = new System.Windows.Forms.DataGridView();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.gvTestGrid2 = new System.Windows.Forms.DataGridView();
+            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.gvT = new System.Windows.Forms.DataGridView();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTestGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTestGrid2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvT)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -62,13 +60,20 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // gvTestGrid
+            // toolStripButton4
             // 
-            this.gvTestGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvTestGrid.Location = new System.Drawing.Point(0, 28);
-            this.gvTestGrid.Name = "gvTestGrid";
-            this.gvTestGrid.Size = new System.Drawing.Size(479, 509);
-            this.gvTestGrid.TabIndex = 2;
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton4.Text = "toolStripButton4";
+            // 
+            // toolStripLabel4
+            // 
+            this.toolStripLabel4.Name = "toolStripLabel4";
+            this.toolStripLabel4.Size = new System.Drawing.Size(39, 22);
+            this.toolStripLabel4.Text = "Yenile";
             // 
             // toolStripButton1
             // 
@@ -79,6 +84,12 @@
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(28, 22);
+            this.toolStripLabel1.Text = "Ekle";
+            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -87,6 +98,12 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(57, 22);
+            this.toolStripLabel2.Text = "Duzeltme";
             // 
             // toolStripButton3
             // 
@@ -97,62 +114,33 @@
             this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton3.Text = "toolStripButton3";
             // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(28, 22);
-            this.toolStripLabel1.Text = "Ekle";
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(57, 22);
-            this.toolStripLabel2.Text = "Duzeltme";
-            // 
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
             this.toolStripLabel3.Size = new System.Drawing.Size(19, 22);
             this.toolStripLabel3.Text = "Sil";
             // 
-            // toolStripLabel4
+            // gvT
             // 
-            this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(38, 22);
-            this.toolStripLabel4.Text = "Yenile";
-            // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton4.Text = "toolStripButton4";
-            // 
-            // gvTestGrid2
-            // 
-            this.gvTestGrid2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvTestGrid2.Location = new System.Drawing.Point(485, 28);
-            this.gvTestGrid2.Name = "gvTestGrid2";
-            this.gvTestGrid2.Size = new System.Drawing.Size(449, 458);
-            this.gvTestGrid2.TabIndex = 3;
+            this.gvT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvT.Location = new System.Drawing.Point(25, 43);
+            this.gvT.Name = "gvT";
+            this.gvT.Size = new System.Drawing.Size(878, 478);
+            this.gvT.TabIndex = 2;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(946, 533);
-            this.Controls.Add(this.gvTestGrid2);
-            this.Controls.Add(this.gvTestGrid);
+            this.Controls.Add(this.gvT);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Main";
             this.Text = "Skeleton Win Form : Main";
             this.Load += new System.EventHandler(this.Main_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTestGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvTestGrid2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvT)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,7 +149,6 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.DataGridView gvTestGrid;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
@@ -170,7 +157,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.DataGridView gvTestGrid2;
+        private System.Windows.Forms.DataGridView gvT;
     }
 }
 
