@@ -23,6 +23,19 @@ namespace TSQL
         {
             this.obj = new Context();
         }
+        public IQueryable<Class> fetch<Class>() where Class : class,new()
+        {
+
+            try
+            {
+                return this.obj.GetTable<Class>();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         /// <summary>
         /// Select
         /// </summary>
@@ -66,7 +79,6 @@ namespace TSQL
             }
             return result;
         }
- 
         /// <summary>
         /// Insert Class
         /// </summary>
